@@ -1,11 +1,3 @@
-.appveyor.yml
-.bumpversion.cfg
-.cookiecutterrc
-.coveragerc
-.editorconfig
-.pre-commit-config.yaml
-.readthedocs.yml
-.travis.yml
 AUTHORS.rst
 CHANGELOG.rst
 CONTRIBUTING.rst

@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='alldata',
-    version= '0.0.3',
+    version= '0.0.5',
     license='BSD-2-Clause',
     description='This is a Package in which you can Extract Images,Text and Tables from 1 package',
     long_description='%s\n%s' % (

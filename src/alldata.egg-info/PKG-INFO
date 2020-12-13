@@ -1,8 +1,8 @@
 Metadata-Version: 1.2
 Name: alldata
-Version: 0.0.3
+Version: 0.0.5
 Summary: This is a Package in which you can Extract Images,Text and Tables from 1 package
-Home-page: https://https://github.com/shehrozkapoor/alldata.git/shehrozkapoor/python-alldata
+Home-page: https://github.com/shehrozkapoor/alldata.git
 Author: shehrozkapoor
 Author-email: shehrozkapoor@gmail.com
 License: BSD-2-Clause
