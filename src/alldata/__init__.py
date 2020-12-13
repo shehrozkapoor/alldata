@@ -64,7 +64,7 @@ class Table:
 
     def extractSpecPageTableHTML(self,page):
         if 'extractedTablesHTML' in os.listdir():
-            pass:
+            pass        
         else:
             os.mkdir('extractedTablesHTML')
         try:
@@ -82,7 +82,8 @@ class Table:
 
     def extractSpecPageTableCsv(self,page):
         if 'extractedTablesCsv' in os.listdir():
-            pass:
+            pass
+       
         else:
             os.mkdir('extractedTablesCsv')
         try:
@@ -99,7 +100,8 @@ class Table:
             print(e)
     def extractSpecPageTableJson(self,page):
         if 'extractedTablesJson' in os.listdir():
-            pass:
+            pass
+       
         else:
             os.mkdir('extractedTablesJson')
         try:
