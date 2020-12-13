@@ -21,8 +21,9 @@ class Table:
     def extractTableCsv(self):
         try:
             tables = tabula.convert_into(self._address,"extractedCSVAll.csv",pages='all')
-            if tables is None:
-                print('[!] No table found an empty file created')
+            print(tables)
+            # if tables is None:
+            #     print('[!] No table found an empty file created')
         except FileNotFoundError:
             print("[!] File not found Invalid address")
         except Exception as e:
