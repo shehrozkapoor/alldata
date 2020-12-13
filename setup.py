@@ -34,7 +34,7 @@ setup(
     ),
     author='shehrozkapoor',
     author_email='shehrozkapoor@gmail.com',
-    url='https://https://github.com/shehrozkapoor/alldata.git/shehrozkapoor/python-alldata',
+    url = 'https://github.com/shehrozkapoor/alldata.git',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
