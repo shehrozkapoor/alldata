@@ -19,7 +19,7 @@ class Table:
 
 
     def extractTableCsv(self):
-        if 'extractedTablesCsv' is in os.listdir():
+        if 'extractedTablesCsv' in os.listdir():
             pass
         else:
             os.mkdir('extractedTablesCsv')
@@ -33,7 +33,7 @@ class Table:
             print(e)
 
     def extractTableJson(self):
-        if 'extractedTablesJson' is in os.listdir():
+        if 'extractedTablesJson' in os.listdir():
             pass
         else:
             os.mkdir('extractedTablesJson')
@@ -47,7 +47,7 @@ class Table:
             print(e)
 
     def extractTableHTML(self):
-        if 'extractedTablesHTML' is in os.listdir():
+        if 'extractedTablesHTML' in os.listdir():
             pass
         else:
             os.mkdir('extractedTablesHTML')
@@ -63,7 +63,7 @@ class Table:
             print(e)
 
     def extractSpecPageTableHTML(self,page):
-        if 'extractedTablesHTML' is in os.listdir():
+        if 'extractedTablesHTML' in os.listdir():
             pass:
         else:
             os.mkdir('extractedTablesHTML')
@@ -81,7 +81,7 @@ class Table:
             print(e)
 
     def extractSpecPageTableCsv(self,page):
-        if 'extractedTablesCsv' is in os.listdir():
+        if 'extractedTablesCsv' in os.listdir():
             pass:
         else:
             os.mkdir('extractedTablesCsv')
@@ -98,7 +98,7 @@ class Table:
         except Exception as e:
             print(e)
     def extractSpecPageTableJson(self,page):
-        if 'extractedTablesJson' is in os.listdir():
+        if 'extractedTablesJson' in os.listdir():
             pass:
         else:
             os.mkdir('extractedTablesJson')
@@ -120,7 +120,7 @@ class Image:
         self._address = address
 
     def extractImageAll(self):
-        if 'extractedImages' is in os.listdir():
+        if 'extractedImages' in os.listdir():
             pass
         else:
             os.mkdir('extractedImages')
@@ -139,7 +139,7 @@ class Image:
                     pix1 = None  
                 pix = None  
     def extractImageSpecPage(self,page):
-        if 'extractedImages' is in os.listdir():
+        if 'extractedImages' in os.listdir():
             pass
         else:
             os.mkdir('extractedImages')
@@ -170,7 +170,7 @@ class Text:
 
 
     def extractTextAll(self):
-        if 'extractedTextAll' is in os.listdir():
+        if 'extractedTextAll' in os.listdir():
             pass
         else:
             os.mkdir('extractedTextAll')
@@ -186,7 +186,7 @@ class Text:
             f.close()
 
     def extractTextSpecPage(self,page):
-        if 'extractedTextAll' is in os.listdir():
+        if 'extractedTextAll' in os.listdir():
             pass
         else:
             os.mkdir('extractedTextAll')
