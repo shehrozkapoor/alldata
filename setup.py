@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='alldata',
-    version= '0.0.7',
+    version= '0.1.0',
     license='BSD-2-Clause',
     description='This is a Package in which you can Extract Images,Text and Tables from 1 package',
     long_description='%s\n%s' % (
@@ -82,7 +82,8 @@ setup(
         'pillow',
         'nltk',
         'numpy',
-        'networkx'
+        'networkx',
+        'text_summarizer'
     ],
     extras_require={
         # eg:

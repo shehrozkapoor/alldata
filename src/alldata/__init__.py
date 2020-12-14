@@ -9,8 +9,10 @@ import tabula
 import camelot
 import nltk
 from nltk.corpus import stopwords
+from text_summarizer import generate_summary
 from nltk.cluster.util import cosine_distance
 import numpy as np
+import threading
 import networkx as nx
 
 class Table:
@@ -140,6 +142,13 @@ class Image:
                     pix1.writePNG("extractedImages/p%s-%s.png" % (i, xref))
                     pix1 = None  
                 pix = None  
+    def extract_images(pdf, pages):
+        threads = []
+        for page in pages:
+            temp = threading.Thread(target=extract_image, args=(pdf, page, ))
+            temp.start()
+            print(f"thread launched for page - {page}") 
+        extract_images("PDF_Samples/AutoCad_Diagram.pdf", pages=list(range(19)))
     def extractImageSpecPage(self,page):
         if 'extractedImages' in os.listdir():
             pass
@@ -202,14 +211,14 @@ class Text:
             f.write(pageObj.extractText())
             f.close()
 
-class summarize:
+class Summarize:
     def __init__(self,address):
         self._address=address
 
     def read_article(self):
-        file = open(self._address       , "r")
+        file = open(self._address, "r")
         filedata = file.readlines()
-        article = filedata[0].split(". ")
+        article = filedata[0].split(".")
         sentences = []
 
         for sentence in article:
@@ -219,7 +228,7 @@ class summarize:
     
         return sentences
 
-    def sentence_similarity(sent1, sent2, stopwords=None):
+    def sentence_similarity(self,sent1, sent2, stopwords=None):
         if stopwords is None:
             stopwords = []
 
@@ -245,7 +254,7 @@ class summarize:
 
         return 1 - cosine_distance(vector1, vector2)
  
-    def build_similarity_matrix(sentences, stop_words):
+    def build_similarity_matrix(self,sentences, stop_words):
         # Create an empty similarity matrix
         similarity_matrix = np.zeros((len(sentences), len(sentences)))
     
@@ -258,7 +267,7 @@ class summarize:
         return similarity_matrix
 
 
-    def generate_summary(file_name, top_n=5):
+    def generate_summary(self,file_name, top_n=5):
         nltk.download("stopwords")
         stop_words = stopwords.words('english')
         summarize_text = []
@@ -282,3 +291,16 @@ class summarize:
 
         # Step 5 - Offcourse, output the summarize texr
         print("Summarize Text: \n", ". ".join(summarize_text))
+    def summarizer(self):
+        f = open("extracted_text.txt", 'w')
+
+        for page in range(19):
+            print (page)
+        try:
+            f.write(extract_text("maviya.pdf", page=page))
+            f.write("\n")
+        except:
+            print ("<no text>")
+
+        f.close()
+        generate_summary( "extracted_text.txt", 3)
