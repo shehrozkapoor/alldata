@@ -24,6 +24,7 @@ docs/spelling_wordlist.txt
 docs/usage.rst
 docs/reference/alldata.rst
 docs/reference/index.rst
+src/.DS_Store
 src/alldata/__init__.py
 src/alldata/__main__.py
 src/alldata/cli.py

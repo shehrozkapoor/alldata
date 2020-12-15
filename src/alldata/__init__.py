@@ -7,13 +7,11 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 from tabula import read_pdf
 import tabula
 import camelot
-import nltk
-from nltk.corpus import stopwords
-from text_summarizer import generate_summary
-from nltk.cluster.util import cosine_distance
 import numpy as np
-import threading
-import networkx as nx
+import spacy
+from spacy.lang.en.stop_words import STOP_WORDS
+from string import punctuation
+from heapq import nlargest
 
 class Table:
     def __init__(self,address):
@@ -181,6 +179,7 @@ class Text:
 
 
     def extractTextAll(self):
+        extractedtext = ""
         if 'extractedTextAll' in os.listdir():
             pass
         else:
@@ -194,7 +193,9 @@ class Text:
             for page_num in range(pdf.numPages):
                 pageObj = pdf.getPage(page_num)
                 f.write(pageObj.extractText())
+                extractedtext += pageObj.extractText()
             f.close()
+        return extractedtext
 
     def extractTextSpecPage(self,page):
         if 'extractedTextAll' in os.listdir():
@@ -214,93 +215,63 @@ class Text:
 class Summarize:
     def __init__(self,address):
         self._address=address
-
-    def read_article(self):
-        file = open(self._address, "r")
-        filedata = file.readlines()
-        article = filedata[0].split(".")
-        sentences = []
-
-        for sentence in article:
-            print(sentence)
-            sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
-        sentences.pop() 
-    
-        return sentences
-
-    def sentence_similarity(self,sent1, sent2, stopwords=None):
-        if stopwords is None:
-            stopwords = []
-
-        sent1 = [w.lower() for w in sent1]
-        sent2 = [w.lower() for w in sent2]
-
-        all_words = list(set(sent1 + sent2))
-
-        vector1 = [0] * len(all_words)
-        vector2 = [0] * len(all_words)
-
-    # build the vector for the first sentence
-        for w in sent1:
-            if w in stopwords:
-                continue
-            vector1[all_words.index(w)] += 1
-
-    # build the vector for the second sentence
-        for w in sent2:
-            if w in stopwords:
-                continue
-            vector2[all_words.index(w)] += 1
-
-        return 1 - cosine_distance(vector1, vector2)
- 
-    def build_similarity_matrix(self,sentences, stop_words):
-        # Create an empty similarity matrix
-        similarity_matrix = np.zeros((len(sentences), len(sentences)))
-    
-        for idx1 in range(len(sentences)):
-            for idx2 in range(len(sentences)):
-                if idx1 == idx2: #ignore if both are same sentences
-                    continue 
-                similarity_matrix[idx1][idx2] = sentence_similarity(sentences[idx1], sentences[idx2], stop_words)
-
-        return similarity_matrix
-
-
-    def generate_summary(self,file_name, top_n=5):
-        nltk.download("stopwords")
-        stop_words = stopwords.words('english')
-        summarize_text = []
-
-        # Step 1 - Read text anc split it
-        sentences =  read_article(file_name)
-
-        # Step 2 - Generate Similary Martix across sentences
-        sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
-
-        # Step 3 - Rank sentences in similarity martix
-        sentence_similarity_graph = nx.from_numpy_array(sentence_similarity_martix)
-        scores = nx.pagerank(sentence_similarity_graph)
-
-        # Step 4 - Sort the rank and pick top sentences
-        ranked_sentence = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)    
-        print("Indexes of top ranked_sentence order are ", ranked_sentence)    
-
-        for i in range(top_n):
-            summarize_text.append(" ".join(ranked_sentence[i][1]))
-
-        # Step 5 - Offcourse, output the summarize texr
-        print("Summarize Text: \n", ". ".join(summarize_text))
-    def summarizer(self):
-        f = open("extracted_text.txt", 'w')
-
-        for page in range(19):
-            print (page)
         try:
-            f.write(extract_text("maviya.pdf", page=page))
-            f.write("\n")
-        except:
-            print ("<no text>")
+            nlp = spacy.load('en')
+        except OSError:
+            print('Downloading language model for the spaCy POS tagger\n'
+            "(don't worry, this will only happen once)")
+            from spacy.cli import download
+            download('en')
+            nlp = spacy.load('en')
+    def summarizer(self):
+        text = Text(self._address)
+        text = text.extractTextAll()
+        if len(text) == 0:
+            Print('No text extraction available in pdf')
+            exit(0)
+        stopwords = list(STOP_WORDS)
+        stopwords.append(',')
+        nlp = spacy.load('en_core_web_sm')
+        doc = nlp(text)
+        tokens = [token.text for token in doc]
+        # punctuation += '\n'
+        word_frequencies = {}
+        for word in doc:
+            if word.text.lower() not in stopwords:
+                if word.text.lower() not in punctuation:
+                    if word.text not in word_frequencies.keys():
+                        word_frequencies[word.text] = 1
+                    else:
+                        word_frequencies[word.text]+=1
 
-        f.close()
-        generate_summary( "extracted_text.txt", 3)
+        max_frequency = max(word_frequencies.values())
+        for word in word_frequencies.keys():
+            word_frequencies[word] = word_frequencies[word]/max_frequency
+
+        sentence_tokens = [sent for sent in doc.sents]
+
+        sentence_scores = {}
+        for sent in sentence_tokens:
+            for word in sentence_tokens:
+                for word in sent:
+                    if word.text.lower() in word_frequencies.keys():
+                            if sent not in sentence_scores.keys():
+                                sentence_scores[sent] = word_frequencies[word.text.lower()]
+                            else:
+                                sentence_scores[sent] += word_frequencies[word.text.lower()]
+
+        select_length = int(len(sentence_tokens)*0.3)
+
+        summary = nlargest(select_length,sentence_scores,key=sentence_scores.get)
+
+        final_summary = [word.text for word in summary]
+
+        summary = ''.join(final_summary)
+        if 'extractedPdfSummary' in os.listdir():
+            pass
+        else:
+            os.mkdir('extractedPdfSummary')
+        with open('extractedPdfSummary/extractedsummary.txt','w') as f:
+            if len(summary) != 0:
+                f.write(summary)
+            f.close

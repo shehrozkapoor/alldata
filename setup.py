@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='alldata',
-    version= '0.1.0',
+    version= '0.1.1',
     license='BSD-2-Clause',
     description='This is a Package in which you can Extract Images,Text and Tables from 1 package',
     long_description='%s\n%s' % (
@@ -80,16 +80,16 @@ setup(
         'PyPDF2',
         'PyMuPDF',
         'pillow',
-        'nltk',
         'numpy',
-        'networkx',
-        'text_summarizer'
+        'spacy',
     ],
+    
     extras_require={
         # eg:
         #   'rst': ['docutils>=0.11'],
         #   ':python_version=="2.6"': ['argparse'],
     },
+    dependency_links=['https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz'],
     entry_points={
         'console_scripts': [
             'alldata = alldata.cli:main',
