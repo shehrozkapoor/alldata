@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='alldata',
-    version= '0.1.2',
+    version= '0.2.0',
     license='BSD-2-Clause',
     description='This is a Package in which you can Extract Images,Text and Tables from 1 package',
     long_description='%s\n%s' % (
@@ -84,6 +84,7 @@ setup(
         'numpy',
         'spacy',
         'pdfminer',
+        'pdfminer.six'
     ],
     
     extras_require={

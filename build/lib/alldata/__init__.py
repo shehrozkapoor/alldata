@@ -30,8 +30,6 @@ class Table:
             os.mkdir('extractedTablesCsv')
         try:
             tables = tabula.convert_into(self._address,"extractedTablesCsv/extractedCSVAll.csv",pages='all')
-            if tables is None:
-                print('[!] No table found an empty file created')
         except FileNotFoundError:
             print("[!] File not found Invalid address")
         except Exception as e:
@@ -44,8 +42,6 @@ class Table:
             os.mkdir('extractedTablesJson')
         try:
             tables = tabula.convert_into(self._address,"extractedTablesJson/extractedJsonAll.json",pages='all')
-            if tables is None:
-                print('[!] No table found an empty file created')
         except FileNotFoundError:
             print("[!] File not found Invalid address")
         except Exception as e:
@@ -97,8 +93,6 @@ class Table:
                 print('[!] Invalid Page Number')
                 return
             tables = tabula.convert_into(self._address, f"extractedTablesCsv/OutputCsv{page}.csv", output_format="csv", pages=page)
-            if tables is None:
-                print('[!] No table found an empty file created')
         except FileNotFoundError:
             print("[!] File not found Invalid address")
         except Exception as e:
@@ -106,7 +100,6 @@ class Table:
     def extractSpecPageTableJson(self,page):
         if 'extractedTablesJson' in os.listdir():
             pass
-       
         else:
             os.mkdir('extractedTablesJson')
         try:
@@ -115,10 +108,10 @@ class Table:
                 print('[!] Invalid Page Number')
                 return
             tables = tabula.convert_into(self._address, f"extractedTablesJson/OutputJson{page}.json", output_format="json", pages=page)
-            if tables is None:
-                print('[!] No table found an empty file created')
         except FileNotFoundError:
             print("[!] File not found Invalid address")
+        except TypeError:
+            print('Please Enter a Page Number')
         except Exception as e:
             print(e)
 
@@ -136,6 +129,7 @@ class Image:
             for img in doc.getPageImageList(i):
                 if len(doc.getPageImageList(i))==0:
                     print(f'[!]No Image Found on {i}')
+                print(type(img))
                 xref = img[0] 
                 pix = fitz.Pixmap(doc, xref)
                 if pix.n < 5: 
@@ -209,16 +203,21 @@ class Text:
             device.close()
             extractedtext = retstr.getvalue()
             retstr.close()
-            return extractedtext
+            lines = extractedtext.split("\n")
+            non_empty_lines = [line for line in lines if line.strip() != ""]
+            string_without_empty_lines = ""
+            for line in non_empty_lines:
+                string_without_empty_lines += line + "\n"
+            with io.open('extractedTextAll/extractText.txt','w',encoding='utf-8') as f:
+                f.write(string_without_empty_lines)
+                f.close()
+            return string_without_empty_lines
         except FileNotFoundError:
             print("[!] No File Found ")
             return
-        with open('extractedTextAll/extractText.txt','w') as f:
-            f.write(extractedtext)
-            f.close()
-        return extractedtext
 
     def extractTextSpecPage(self,page):
+        extractedtext = ""
         if 'extractedTextAll' in os.listdir():
             pass
         else:
@@ -228,22 +227,33 @@ class Text:
         except FileNotFoundError:
             print("[!] No File Found ")
             return
-        with open(f'extractedTextAll/extractTextPage{page}.txt','w') as f:
+        try:
             pageObj = pdf.getPage(page)
-            f.write(pageObj.extractText())
-            f.close()
-
+            lines = pageObj.extractText().split("\n")
+            non_empty_lines = [line for line in lines if line.strip() != ""]
+            extractedtext = ""
+            for line in non_empty_lines:
+                extractedtext += line + "\n"
+            with io.open(f'extractedTextAll/extractTextPage{page}.txt','w',encoding='utf-8') as f:
+                f.write(extractedtext)
+                f.close()
+        except IndexError:
+            print('No page found ')
+        except Exception as e:
+            print(e)
+        
+        return extractedtext
 class Summarize:
     def __init__(self,address):
         self._address=address  #address
-        try:
-            nlp = spacy.load('en') #load 
-        except OSError:
-            print('Downloading language model for the spaCy POS tagger\n'
-            "(don't worry, this will only happen once)")
-            from spacy.cli import download   #download    
-            download('en')
-            nlp = spacy.load('en')
+        # try:
+        #     nlp = spacy.load('en') #load 
+        # except OSError:
+        #     print('Downloading language model for the spaCy POS tagger\n'
+        #     "(don't worry, this will only happen once)")
+        #     from spacy.cli import download   #download    
+        #     download('en')
+        #     nlp = spacy.load('en')
     def summarizer(self):
         text = Text(self._address)  #text
         text = text.extractTextAll() #extract 
@@ -252,7 +262,6 @@ class Summarize:
             exit(0)
         stopwords = list(STOP_WORDS) 
         stopwords.append(',')
-        print(stopwords)
         nlp = spacy.load('en_core_web_sm') #load en_core_Web_sm lib
         doc = nlp(text) #load all text in nlp
         tokens = [token.text for token in doc] #tokeniztion
@@ -292,7 +301,7 @@ class Summarize:
             pass
         else:
             os.mkdir('extractedPdfSummary')
-        with open('extractedPdfSummary/extractedsummary.txt','w') as f:
+        with io.open('extractedPdfSummary/extractedsummary.txt','w',encoding='utf-8') as f:
             if len(summary) != 0:
                 f.write(summary)
             f.close
