@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='alldata',
-    version= '0.1.1',
+    version= '0.1.2',
     license='BSD-2-Clause',
     description='This is a Package in which you can Extract Images,Text and Tables from 1 package',
     long_description='%s\n%s' % (
@@ -75,6 +75,7 @@ setup(
     ],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
+        'pip',
         'tabula-py',
         'camelot-py[cv]',
         'PyPDF2',
@@ -82,6 +83,7 @@ setup(
         'pillow',
         'numpy',
         'spacy',
+        'pdfminer',
     ],
     
     extras_require={

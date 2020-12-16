@@ -1,0 +1,147 @@
+the computational
+time is comparatively lesser and is independent of the test
+data
+
+[5] proposes a method called importance weighted cross
+validation(IWCV) for which the distribution maintains its
+property of unbiasedness under the case of covariate dataset
+shift.There
+are various methods for detecting the changes in the data;
+one of the most famous method is by using the histograms,
+with which you can check the changes in model prediction
+and also if the most important columns or features drift.
+The data
+samples must be stored for tuning and future use, if required
+for the classiﬁer, (2) the current data is the representation
+of new knowledge which would be useful for adaptation,
+In this paper a proposed method to tackle with
+the simple dataset shift is by matching the covariate shift
+distributions of training and test data in a high dimensional
+feature space (Kernel Hilbert space).But for the data with
+covariate shift the Kernel Mean Matching method or any
+other technique could be applied to maintain the property
+of the classiﬁer as unbiasedness.
+
+a non-stationary environment, the dataset shift has
+
+been ignored and assumed that the train and the test
+distribution follow the same probability distribution in
+supervised learning algorithms which is rather a naive
+assumption.Another method was proposed with covariate
+shift and retraining with the current knowledge base and
+the new knowledge base which is obtained from the delay in
+the shift detection.The
+Covariate shift in data can be evaluated by evaluating the
+AUC-ROC score, which says that if the score is greater than
+0.80the next step is to create a random
+sample for the training and the test dataset and then adding
+a new feature which has the value depending on the values
+of the data, c)It is seen that with
+properly choosing the parameters and with the correction in
+the covariate shift the classiﬁer and the regression methods
+could beneﬁt.In this method the training and test densities
+are ﬁrst separately estimated and then the importance is
+estimated by the ratio of the estimated densities of train
+and the test.One such technique that could be used
+is; after identifying the drift in the features of the dataset the
+columns or the features that have a drift can be dropped.
+The train and the
+test were then divided and then was divided and then
+concatenated and a predictive model with a Decision Tree
+classiﬁer was employed to predict the model.the next step
+is to create a model using any classiﬁer of choice and get
+a prediction on the dataset , e) after predicting the AUC-
+The other
+metrics which could also be used to detect the drift are
+Kullback-Lebler divergence, Population Stability Index (PSI)
+and Kolmogorov-Smirnov statistics.
+
+The EMWA
+approach has low computational cost and less memory is
+required during processing which gives enhanced accuracy
+and shorter time delay in the detection.no covariate shift is the dataset and if lies between 0.70 to
+0.80 it could be said that there is some degree of covariate
+shift in the dataset.In this paper there are various methods of detecting
+the dataset shift, but the main limitation with most of
+
+the methods which were based on batch processing was
+the requirement of supervised data.[5] Masashi
+
+Sugiyama, Matthias
+
+Klaus-Robert
+M ¨uller,Covariate Shift Adaptation by Importance Weighted Cross
+Adaptive learning with new knowledge
+base and adaptive learning on combined knowledge base
+and covariate shift was also proposed.
+
+After the cleaning of the
+data is then subjected to detection, which checks for the
+covariate shift in the data.[3] Steffen Bickel, Michael Bruckner, Tobias Scheffer, Discriminative
+Learning Under Covariate Shift, Journal of Machine Learning Re-
+search 10 (2009) 2137-2155.
+
+There are various techniques or methods
+in solving the problem of dataset shift for example; data
+that is obtained for medical purposes.For the unbiased classiﬁcation the only method that
+can be used is the IWCV method to solve the problem of
+covariate dataset shift.The fact that most of the real-world applications use large
+chunks of data in which they must cope up with the shift
+in the data.If the test is positive the
+next stage is activated which is the test/validation stage,
+where the shift in the data is ﬁrst detectedIn a predictive
+learning model, the most common problem that is encoun-
+tered is the dataset shift problem.Under the covariate dataset shift, the
+techniques used for model selection like cross validation
+will not work as desired.in this step the data is cleaned by imputing the missing
+values and converting the data types like categorical values
+to a common type, b)This data was subjected to Preprocessing ﬁrst where the
+data was checked for any irregularities like blank spaces
+or any categorical values.Proposed an adaptive
+learning algorithm that detects data shift using an expo-
+ROC score is obtained to check if there is a drift in the
+data or not, it is generally considered a feature with the
+score that is greater than 0.80 says to have a drift.If the features or the
+columns in the dataset are larger, then the time taken to
+complete the task is very much high.
+
+Borgwardt,
+and B. Scholkopf, Covariate shift and local learning by distribution
+matching, pages 131–160.For the AUC-
+ROC score if it is calculated as greater than 0.80, then it
+is considered as a high covariate shift.As these
+datasets is from the customer revenue most of the features
+are numeric and hence a covariate shift is expected.The data sets were subjected to a Decision Tree Classiﬁer for
+the prediction and to evaluate the model performance the
+AUC-ROC score was evaluated.A common approach
+to tackle the bias for a covariate shift is by reweighting
+the loss function.In this paper various real world datasets were
+used and the solution demonstrates that by using KMM the
+learning performance is improved.
+
+Santander Customers is around 0.50
+for AUC-ROC it can be considered that there is no covariate
+shift.The main advantage with this solution
+is without the prior knowledge by cross validation the
+regularization parameters can be tuned.
+
+In this solution,
+the ﬁrst step is the estimate of the actual shift occurred
+which is performed by EWMA.only the ﬁrst two columns were deleted which did not have
+any signiﬁcant impact on the data and was not important
+information as a result was deleted.Since the Decision Tree Classiﬁer is used here the
+categorical values in the data do not make a difference and
+are not removed.Both
+the data sets have a signiﬁcantly large number of features.
+Care must be taken to
+see that the dataset is not unbalanced I.e. the size of the
+training and the test should be nearly equal, d)After identifying the drift in dataset, it can be used
+with different techniques to improve the and maintain the
+unbiased property.A discrimi-
+native model was derived for the differing training and test
+distribution.[4] Proposes a method which estimates the importance
+directly from the samples without going through the density
+estimation.In this method
+there is no need for distribution estimation and the sample
+weights are obtained by quadratic programming.For the data from the Santander
+customer transaction there was no irregularity was found

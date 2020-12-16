@@ -12,6 +12,11 @@ import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 from string import punctuation
 from heapq import nlargest
+import io
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfpage import PDFPage
 
 class Table:
     def __init__(self,address):
@@ -185,15 +190,31 @@ class Text:
         else:
             os.mkdir('extractedTextAll')
         try:
-            pdf = PdfFileReader(self._address)
+            rsrcmgr = PDFResourceManager()
+            retstr = io.StringIO()
+            codec = 'utf-8'
+            laparams = LAParams()
+            device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+            fp = open(self._address, 'rb')
+            interpreter = PDFPageInterpreter(rsrcmgr, device)
+            password = ""
+            maxpages = 0
+            caching = True
+            pagenos = set()
+
+            for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages,password=password,caching=caching,check_extractable=True):
+                interpreter.process_page(page)
+
+            fp.close()
+            device.close()
+            extractedtext = retstr.getvalue()
+            retstr.close()
+            return extractedtext
         except FileNotFoundError:
             print("[!] No File Found ")
             return
         with open('extractedTextAll/extractText.txt','w') as f:
-            for page_num in range(pdf.numPages):
-                pageObj = pdf.getPage(page_num)
-                f.write(pageObj.extractText())
-                extractedtext += pageObj.extractText()
+            f.write(extractedtext)
             f.close()
         return extractedtext
 
@@ -214,27 +235,27 @@ class Text:
 
 class Summarize:
     def __init__(self,address):
-        self._address=address
+        self._address=address  #address
         try:
-            nlp = spacy.load('en')
+            nlp = spacy.load('en') #load 
         except OSError:
             print('Downloading language model for the spaCy POS tagger\n'
             "(don't worry, this will only happen once)")
-            from spacy.cli import download
+            from spacy.cli import download   #download    
             download('en')
             nlp = spacy.load('en')
     def summarizer(self):
-        text = Text(self._address)
-        text = text.extractTextAll()
+        text = Text(self._address)  #text
+        text = text.extractTextAll() #extract 
         if len(text) == 0:
             Print('No text extraction available in pdf')
             exit(0)
-        stopwords = list(STOP_WORDS)
+        stopwords = list(STOP_WORDS) 
         stopwords.append(',')
-        nlp = spacy.load('en_core_web_sm')
-        doc = nlp(text)
-        tokens = [token.text for token in doc]
-        # punctuation += '\n'
+        print(stopwords)
+        nlp = spacy.load('en_core_web_sm') #load en_core_Web_sm lib
+        doc = nlp(text) #load all text in nlp
+        tokens = [token.text for token in doc] #tokeniztion
         word_frequencies = {}
         for word in doc:
             if word.text.lower() not in stopwords:
