@@ -213,8 +213,10 @@ class Text:
         except FileNotFoundError:
             print("[!] No File Found ")
             return
-        
-        print(extractedtext)
+        with open('extractedTextAll/extractText.txt','w') as f:
+            f.write(extractedtext)
+            f.close()
+        return extractedtext
 
     def extractTextSpecPage(self,page):
         if 'extractedTextAll' in os.listdir():
